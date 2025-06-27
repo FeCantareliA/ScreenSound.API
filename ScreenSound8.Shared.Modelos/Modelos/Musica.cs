@@ -1,4 +1,7 @@
 ﻿
+using ScreenSound8.Shared.Modelos.Modelos;
+using System.Reflection.Metadata.Ecma335;
+
 namespace ScreenSound8.Modelos;
 
 public class Musica
@@ -17,7 +20,7 @@ public class Musica
     public int? AnoLancamento { get; set; }
     public int? ArtistaId { get; set; }
     public virtual Artista? Artista { get; set; }
-
+    public virtual ICollection<Genero> Generos { get; set; }
     public void ExibirFichaTecnica()
     {
         Console.WriteLine($"Nome: {Nome}");

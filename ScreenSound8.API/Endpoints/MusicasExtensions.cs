@@ -4,6 +4,7 @@ using ScreenSound8.API.Requests;
 using ScreenSound8.API.Response;
 using ScreenSound8.Banco;
 using ScreenSound8.Modelos;
+using ScreenSound8.Shared.Modelos.Modelos;
 
 namespace ScreenSound8.API.Endpoints;
 
@@ -34,8 +35,15 @@ public static class MusicasExtensions
 
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
+        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromServices] DAL < Genero > dalGenero,[FromBody] MusicaRequest musicaRequest) =>
         {
+            var musica = new Musica(musicaRequest.nome)
+            {
+                ArtistaId = musicaRequest.ArtistaId,
+                AnoLancamento = musicaRequest.anoLancamento,
+                Generos =musicaRequest.Generos is not null? GeneroRequestConverter(musicaRequest.Generos,dalGenero): new List<Genero>()
+            };
+
             dal.Adicionar(musica);
             return Results.Ok();
         });
@@ -66,6 +74,30 @@ public static class MusicasExtensions
         #endregion
 
     }
+
+    private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos, [FromServices] DAL<Genero> dalGenero)
+    {
+        var listaDeGeneros = new List<Genero>();
+        foreach (var item in generos)
+        {
+            var entity = RequestToEntity(item);
+            var genero = dalGenero.RecuperarPor(g => g.Nome.ToUpper().Equals(item.Nome.ToUpper()));
+            if(genero is not null)
+            {
+                listaDeGeneros.Add(genero);
+            }
+            else
+            {
+                listaDeGeneros.Add(entity);
+            }
+        }
+        return listaDeGeneros;
+    }
+    private static Genero RequestToEntity(GeneroRequest genero)
+    {
+        return new Genero() { Nome = genero.Nome,Descricao = genero.Descricao};
+    }
+
     private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
     {
         return musicaList.Select(a => EntityToResponse(a)).ToList();

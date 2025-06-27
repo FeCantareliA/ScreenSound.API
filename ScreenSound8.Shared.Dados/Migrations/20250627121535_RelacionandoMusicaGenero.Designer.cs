@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScreenSound8.Banco;
 
@@ -10,9 +11,11 @@ using ScreenSound8.Banco;
 namespace ScreenSound8.Shared.Dados.Migrations
 {
     [DbContext(typeof(ScreenSound8Context))]
-    partial class ScreenSound8ContextModelSnapshot : ModelSnapshot
+    [Migration("20250627121535_RelacionandoMusicaGenero")]
+    partial class RelacionandoMusicaGenero
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
