@@ -15,7 +15,8 @@ public class ScreenSound8Context : DbContext
     public DbSet<Musica> Musicas { get; set; }
     public DbSet<Genero> Generos { get; set; }
 
-    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    //private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    private string connectionString = "Server=tcp:screensoundserver-estudo.database.windows.net,1433;Initial Catalog=ScreenSoundV0;Persist Security Info=False;User ID=Spartam;Password=\"418593@Sp\";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(connectionString).UseLazyLoadingProxies();
