@@ -1,0 +1,37 @@
+﻿@page "/Artistas"
+@inject ArtistaAPI artistaAPI
+<h3>Artistas</h3>
+
+@if(artistas is not null)
+{
+    <MudGrid>
+        @foreach(var artista in artistas)
+        {
+            <MudItem xs="3">
+                <CardArtista Artista ="artista"/>
+            </MudItem>
+        }
+    </MudGrid>
+}
+@if (mensagemErro is not null)
+{
+    <p style="color:red">@mensagemErro</p>
+}
+
+
+@code {
+    private ICollection<ArtistaResponse>? artistas;
+    private string? mensagemErro;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            artistas = await artistaAPI.GetArtistasAsync();
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = "Erro ao carregar artistas: \n" + ex;
+        }
+    }
+}

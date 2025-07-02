@@ -1,10 +1,20 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ScreenSound8.Banco;
 using ScreenSound8.Menus;
 using ScreenSound8.Modelos;
 
-var context = new ScreenSound8Context();
-var artistaDAL = new DAL<Artista>(context);
+var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory()) // necessário para localizar o arquivo
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+var optionsBuilder = new DbContextOptionsBuilder<ScreenSound8Context>();
+optionsBuilder.UseSqlServer(configuration.GetConnectionString("ScreenSoundDB"));
+optionsBuilder.UseLazyLoadingProxies();
+
+var context = new ScreenSound8Context(optionsBuilder.Options); var artistaDAL = new DAL<Artista>(context);
 
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());

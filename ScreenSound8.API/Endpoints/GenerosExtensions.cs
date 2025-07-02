@@ -58,8 +58,8 @@ public static class GenerosExtensions
             {
                 return Results.NotFound();
             }
-            GeneroAAtualizar.Nome = GeneroRequestEdit.nome;
-            GeneroAAtualizar.Descricao = GeneroRequestEdit.descricao;
+            GeneroAAtualizar.Nome = GeneroRequestEdit.Nome;
+            GeneroAAtualizar.Descricao = GeneroRequestEdit.Descricao;
 
             dal.Atualizar(GeneroAAtualizar);
             return Results.Ok();
