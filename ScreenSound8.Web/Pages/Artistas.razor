@@ -1,11 +1,17 @@
 ﻿@page "/Artistas"
 @inject ArtistaAPI artistaAPI
-<h3>Artistas</h3>
 
-@if(artistas is not null)
+
+<MudStack class="mt-4 mb-4" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Class="mb-4" Typo="Typo.h4">Artistas Cadastrados</MudText>
+    <MudPagination Count="@totalPaginas" SelectedChanged="PaginaMudou">
+    </MudPagination>
+</MudStack>
+
+@if (artistaPorPagina is not null)
 {
     <MudGrid>
-        @foreach(var artista in artistas)
+        @foreach (var artista in artistaPorPagina)
         {
             <MudItem xs="3">
                 <CardArtista Artista ="artista"/>
@@ -23,15 +29,33 @@
     private ICollection<ArtistaResponse>? artistas;
     private string? mensagemErro;
 
+    private int tamanho = 8;
+    private int totalItens;
+    private int totalPaginas;
+    private ICollection<ArtistaResponse>? artistaPorPagina;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             artistas = await artistaAPI.GetArtistasAsync();
+            if(artistas is not null)
+            {
+                artistas = artistas.OrderByDescending(a => a.Id).ToList();
+                totalItens = artistas.Count();
+                totalPaginas = Convert.ToInt32(Math.Ceiling((totalItens * 1.0) / tamanho));
+                this.PaginaMudou(1);
+            }
         }
         catch (Exception ex)
         {
             mensagemErro = "Erro ao carregar artistas: \n" + ex;
         }
+    }
+
+    private void PaginaMudou(int pageNumber)
+    {
+        var indice = pageNumber - 1;
+        artistaPorPagina = artistas!.Skip(tamanho * indice).Take(tamanho).ToList();
     }
 }

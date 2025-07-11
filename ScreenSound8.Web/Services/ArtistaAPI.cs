@@ -20,7 +20,19 @@ namespace ScreenSound8.Web.Services
         }
         public async Task AddArtistaAsync (ArtistaRequest request)
         {
-            await _httpClient.PostAsJsonAsync("artistas", request);
+            await _httpClient.PostAsJsonAsync("Artistas", request);
+        }
+        public async Task DeleteArtistaAsync(int id)
+        {
+            await _httpClient.DeleteAsync($"Artistas/{id}");
+        }
+        public async Task UpdateArtistaAsync(ArtistaRequestEdit artista) 
+        {
+            await _httpClient.PutAsJsonAsync($"Artistas", artista);
+        }
+        public async Task<ArtistaResponse?> GetArtistaPorNomeAsync(string nome)
+        {
+            return await _httpClient.GetFromJsonAsync<ArtistaResponse>($"Artistas/{nome}");
         }
     }
 }

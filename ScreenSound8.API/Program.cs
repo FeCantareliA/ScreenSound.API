@@ -31,6 +31,8 @@ app.UseCors(options =>
     .AllowAnyHeader();
 });
 
+app.UseStaticFiles();
+
 app.AddEndPointsArtistas();
 app.AddEndPointsMusicas();
 app.AddEndPointsGeneros();
